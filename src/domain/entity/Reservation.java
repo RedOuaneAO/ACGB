@@ -1,3 +1,5 @@
+package domain.entity;
+
 public class Reservation {
     private String isbn;
     private int membreNumb;
@@ -15,15 +17,9 @@ public class Reservation {
         return status;
     }
 
-    public void setIsbn(String isbn) {
+    public Reservation(String isbn, int membreNumb, String status) {
         this.isbn = isbn;
-    }
-
-    public void setMembreNumb(int membreNumb) {
         this.membreNumb = membreNumb;
-    }
-
-    public void setStatus(String status) {
         this.status = status;
     }
 }

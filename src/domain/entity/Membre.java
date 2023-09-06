@@ -1,3 +1,5 @@
+package domain.entity;
+
 public class Membre {
     private int membreNumber;
     private String firstName;
@@ -15,15 +17,9 @@ public class Membre {
         return secondName;
     }
 
-    public void setMembreNumber(int membreNumber) {
+    public Membre(int membreNumber, String firstName, String secondName) {
         this.membreNumber = membreNumber;
-    }
-
-    public void setFirstName(String firstName) {
         this.firstName = firstName;
-    }
-
-    public void setSecondName(String secondName) {
         this.secondName = secondName;
     }
 }
