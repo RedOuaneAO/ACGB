@@ -1,6 +1,8 @@
 package repository;
 import domain.entity.*;
 import config.*;
+
+import javax.imageio.plugins.jpeg.JPEGImageReadParam;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.Connection;
@@ -22,7 +24,32 @@ public class BookRepo {
                 System.out.println("isbn : " + result.getString(3));
                 System.out.println("quantity : " + result.getInt(4));
             }
-            con.close();
+            //con.close();
+        }catch (Exception e){
+            System.out.println(e);
+        }
+    }
+    public void displayBorrowedBook(){
+        try{
+           /* PreparedStatement preparedStatement = con.prepareStatement("SELECT * FROM book join reservation on book.id =reservation.bookId WHERE reservation.status='Borrowed'");
+            ResultSet result = preparedStatement.executeQuery();
+            while (result.next()) {
+                System.out.println("id : " + result.getInt(1));
+                System.out.println("title : " + result.getString(2));
+                System.out.println("isbn : " + result.getString(3));
+                System.out.println("quantity : " + result.getInt(4));
+            }*/
+            PreparedStatement preparedStatement = con.prepareStatement("SELECT reservation.*  ,book.title , membre.memberNum FROM reservation join book on book.id =reservation.bookId JOIN membre on reservation.memberId=membre.id  WHERE reservation.status='Borrowed';");
+            ResultSet result = preparedStatement.executeQuery();
+            while (result.next()) {
+                System.out.println("id : " + result.getInt(1));
+                System.out.println("title : " + result.getString(8));
+                System.out.println("status : " + result.getString(4));
+                System.out.println("member Numbre : " + result.getInt(9));
+                System.out.println("borrow date : " + result.getDate(5));
+                System.out.println("borrow date : " + result.getDate(6));
+            }
+            //con.close();
         }catch (Exception e){
             System.out.println(e);
         }
@@ -252,6 +279,20 @@ public class BookRepo {
             preparedStatement.setInt(1,reservation.getMembreId());
             preparedStatement.setInt(2,reservation.getBoookID());
             preparedStatement.executeUpdate();
+        }catch(Exception e){
+            System.out.println(e);
+        }
+    }
+    public void statistique(){
+        try{
+            PreparedStatement preparedStatement = con.prepareStatement("SELECT SUM(book.quantity) as availableBooks ,(SELECT COUNT(reservation.id) FROM reservation WHERE reservation.status ='borrowed') as borrowedBook , (SELECT COUNT(reservation.id) FROM reservation WHERE reservation.status ='Lost') as lostBook FROM book LEFT JOIN reservation on book.id = reservation.bookId");
+            ResultSet result = preparedStatement.executeQuery();
+            if (result.next()) {
+                System.out.println("Available Book :\n" + result.getInt(1));
+                System.out.println("Borrowed Book :\n" + result.getInt(2));
+                System.out.println("Lost Book :\n" + result.getInt(3));
+            }
+
         }catch(Exception e){
             System.out.println(e);
         }

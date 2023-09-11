@@ -11,11 +11,11 @@ import java.time.temporal.ChronoUnit;
 public class Main {
     public static void main(String[] args){
         BookRepo BookObj = new BookRepo();
-        int continueMain =1;
-        while (continueMain==1){
         System.out.println("===============================================================");
         System.out.println("=====================YouCode Bibliothèque======================");
         System.out.println("===============================================================");
+        int continueMain =1;
+        while (continueMain==1){
         System.out.println("======= 1.Add Book");
         System.out.println("======= 2.Display Books");
         System.out.println("======= 3.Search");
@@ -23,6 +23,9 @@ public class Main {
         System.out.println("======= 5.Update a Book");
         System.out.println("======= 6.Borrow a Book");
         System.out.println("======= 7.Return a Book");
+        System.out.println("======= 8.Display Borrowed Book");
+        System.out.println("======= 9 Statistic");
+
         Scanner myObj = new Scanner(System.in);
         int a = myObj.nextInt();
         switch (a) {
@@ -46,6 +49,12 @@ public class Main {
                 break;
             case 7:
                 returnBook();
+                break;
+            case 8:
+                BookObj.displayBorrowedBook();
+                break;
+            case 9:
+                BookObj.statistique();
                 break;
         }
         }
@@ -232,7 +241,7 @@ static void returnBook(){
     int membreId= myObj2.memberExit(num);
     Reservation reservation =new Reservation(membreId,boookID);
     myObj2.returnBookService(reservation);
-
+    System.out.println("The Book Has Been Returned Successfuly");
 }
 
 }

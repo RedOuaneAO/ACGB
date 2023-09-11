@@ -32,9 +32,6 @@ public class BookServices {
         int bookId =bookRepObj.checkBookEx(books);
         bookRepObj.updateBook(books ,bookId );
     }
-    public void updateBookService1(){
-
-    }
     public int addAuteur(String auteur){
        return bookRepObj.addAuteur(auteur);
     }
@@ -44,9 +41,6 @@ public class BookServices {
     public void search(String title){
         bookRepObj.searchByTitle(title);
     }
-    //public boolean bookExist(String isbn){
-      // return bookRepObj.checkBookEx2(isbn);
-    //}
     public int memberExit(int memberNum){
         return bookRepObj.checkMembreEx(memberNum);
     }
