@@ -50,4 +50,12 @@ public class BookServices {
     public void returnBookService(Reservation reservation){
         bookRepObj.returnBook(reservation);
     }
+    public boolean addMembre(Membre membre){
+    if(membre.getFirstName().equals("") || membre.getSecondName().equals("")){
+        return false;
+    }else {
+        bookRepObj.addMembre(membre);
+     return true;
+    }
+    }
 }

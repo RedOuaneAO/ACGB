@@ -56,26 +56,26 @@ public class Main {
             case 9:
                 BookObj.statistique();
                 break;
+            case 10:
+                addMembre();
+                break;
         }
         }
     }
     static void addBook(){
         System.out.println("Enter the book title : ");
-        Scanner bookTitle = new Scanner(System.in);
-        String title = bookTitle.nextLine().trim();
+        Scanner scanner = new Scanner(System.in);
+        String title = scanner.nextLine().trim();
         System.out.println("Enter the book ISBN : ");
-        Scanner bookISBN = new Scanner(System.in);
-        String isbn = bookISBN.nextLine().trim();
+        String isbn = scanner.nextLine().trim();
         System.out.println("Enter the book Quantity : ");
-        Scanner bookQuant = new Scanner(System.in);
-        int quantity = bookQuant.nextInt();
+        int quantity = scanner.nextInt();
         int auteurId=-2 ;
         BookServices bookService =  new BookServices();
         String auteur ="";
         do {
             System.out.println("Enter the book Author : ");
-             Scanner bookAuteur = new Scanner(System.in);
-             auteur = bookAuteur.nextLine().trim();
+             auteur = scanner.nextLine().trim();
             auteurId = bookService.checkIfExist(auteur);
         }while (
                 auteurId == -1
@@ -94,28 +94,24 @@ public class Main {
     }
     static void updateBook(){
         System.out.println("======= 1.Enter Book ISBN");
-        Scanner myObj = new Scanner(System.in);
-        String bookIsbn = myObj.nextLine();
+        Scanner scanner = new Scanner(System.in);
+        String bookIsbn = scanner.nextLine();
         Books isbnObj = new Books(bookIsbn);
         BookRepo updateObj = new BookRepo();
         int bookId = updateObj.checkBookEx(isbnObj);
         if(bookId!=0){
             System.out.println("======= Enter the New Title :");
-            Scanner bookTitle = new Scanner(System.in);
-            String title = bookTitle.nextLine().trim();
+            String title = scanner.nextLine().trim();
             System.out.println("======= Enter the New ISBN :");
-            Scanner bookISBN = new Scanner(System.in);
-            String isbn = bookISBN.nextLine().trim();
+            String isbn = scanner.nextLine().trim();
             System.out.println("======= Enter the New Quantity :");
-            Scanner bookQuant = new Scanner(System.in);
-            int quantity = bookQuant.nextInt();
+            int quantity = scanner.nextInt();
             int auteurId=-2 ;
             BookServices bookService =  new BookServices();
             String auteur ="";
             do {
                 System.out.println("Enter the book Author : ");
-                Scanner bookAuteur = new Scanner(System.in);
-                auteur = bookAuteur.nextLine().trim();
+                auteur = scanner.nextLine().trim();
                 auteurId = bookService.checkIfExist(auteur);
             }while (
                     auteurId == -1
@@ -124,13 +120,10 @@ public class Main {
                 Auteur auteur1 = new Auteur(auteur , auteurId);
                 Books books =new Books(title,isbn,quantity,auteur1);
                 bookService.updateBookService(books);
-                System.out.println("test1");
             }else {
-                System.out.println("test2");
                 int authorId = bookService.addAuteur(auteur);
                 Auteur auteur2 =new Auteur(auteur,authorId);
                 Books books =new Books(title,isbn,quantity,auteur2);
-              //  bookService.updateBookService1(books);
             }
             System.out.println("======= !!!! The Book has been Updated successfully!!!");
         }else {
@@ -139,15 +132,14 @@ public class Main {
     }
     static void deleteBook(){
         System.out.println("======= Enter Book ISBN");
-        Scanner myObj = new Scanner(System.in);
-        String isbn = myObj.nextLine();
+        Scanner scanner = new Scanner(System.in);
+        String isbn = scanner.nextLine();
         Books isbnObj = new Books(isbn);
         BookRepo deleteObj = new BookRepo();
         int bookId = deleteObj.checkBookEx(isbnObj);
         if(bookId!=0){
             System.out.println("======= Enter the Quantity You Want to Delete :");
-            Scanner myObj2 = new Scanner(System.in);
-            int quantity = myObj2.nextInt();
+            int quantity = scanner.nextInt();
             deleteObj.DeleteBook(bookId , quantity);
             System.out.println("======= !!!! The Book(s) has been Deleted Successfully!!!");
         }else {
@@ -157,36 +149,32 @@ public class Main {
     static void search(){
         System.out.println("======= 1.Search By Book Title");
         System.out.println("======= 2.Search By Author");
-        Scanner myObj = new Scanner(System.in);
-        BookServices myObj2 =new BookServices();
-        int choice = myObj.nextInt();
+        Scanner scanner = new Scanner(System.in);
+        BookServices bookServices =new BookServices();
+        int choice = scanner.nextInt();
         if(choice ==1){
             System.out.println("======= 1.Enter the book title :");
-            Scanner bookTitle = new Scanner(System.in);
-            String title = bookTitle.nextLine().trim();
-            myObj2.search(title);
+            String title = scanner.nextLine().trim();
+            bookServices.search(title);
         }else if(choice ==2){
             System.out.println("======= 2.Enter the Author Name :");
-            Scanner auteurName = new Scanner(System.in);
-            String auteur = auteurName.nextLine().trim();
-            BookServices bookService= new BookServices();
-           int AuteurId = bookService.checkIfExist(auteur);
+            String auteur = scanner.nextLine().trim();
+           int AuteurId = bookServices.checkIfExist(auteur);
            BookRepo getBooks =new BookRepo();
            getBooks.searchByAuthor(AuteurId);
         }
     }
     static int borrowBook(){
         System.out.println("======= Enter Book ISBN :");
-        Scanner bookIsbn = new Scanner(System.in);
-        String isbn = bookIsbn.nextLine().trim();
+        Scanner scanner = new Scanner(System.in);
+        String isbn = scanner.nextLine().trim();
         BookServices myObj2 =new BookServices();
         BookRepo myObj3 =new BookRepo();
         Books books =new Books(isbn);
         int boookID =myObj3.checkBookEx(books);
        if (boookID>0){
            System.out.println("======= Enter Membre Number :");
-           Scanner memberNum = new Scanner(System.in);
-           int num = memberNum.nextInt();
+           int num = scanner.nextInt();
            int membreId= myObj2.memberExit(num);
            if(membreId==0){
                System.out.println("===== !This Membre dosen't Exist! :");
@@ -195,11 +183,16 @@ public class Main {
                System.out.println("-----------------------------------");
                System.out.println("======= 1. Yes :");
                System.out.println("======= 2. No  :");
-               Scanner choice = new Scanner(System.in);
-               int choiceresult = choice.nextInt();
+               int choiceresult = scanner.nextInt();
                switch(choiceresult){
                    case 1:
                        addMembre();
+                       LocalDate currentDate = LocalDate.now();
+                       LocalDate dueDate = currentDate.plus(15, ChronoUnit.DAYS);
+                       Reservation reservation = new Reservation(boookID, addMembre(), "Borrowed", currentDate, dueDate ,null);
+                       BookServices borrowObj =new BookServices();
+                       borrowObj.borrowBook(reservation);
+                       System.out.println("Successfuly");
                        break;
                    case 2:
                        return 1;
@@ -217,23 +210,30 @@ public class Main {
        }
        return 1;
     }
-static void addMembre(){
+static int addMembre(){
+    Scanner scanner = new Scanner(System.in);
     System.out.println("===== Enter The Member Frist Name :");
-    Scanner firstNInput = new Scanner(System.in);
-    String firstName =firstNInput.nextLine().trim();
+    String firstName =scanner.nextLine().trim();
     System.out.println("===== Enter The Member Second Name :");
-    Scanner secondNInput = new Scanner(System.in);
-    String secondName =secondNInput.nextLine().trim();
-
-    //Membre membre =new Membre()
+    String secondName =scanner.nextLine().trim();
+    BookRepo bookRepo =new BookRepo();
+    int membreNum =bookRepo.lastMembreNum() +1;
+    Membre membre = new Membre(membreNum , firstName , secondName);
+    BookServices bookServices =new BookServices();
+   boolean result = bookServices.addMembre(membre);
+   if(result){
+       System.out.println("\n ==The Membre Numbre is : " + membreNum);
+   }else {
+       System.out.println("please enter a valide data");
+   }
+   return membreNum;
 }
 static void returnBook(){
     System.out.println("======= Enter Book ISBN :");
-    Scanner bookIsbn = new Scanner(System.in);
-    String isbn = bookIsbn.nextLine().trim();
+    Scanner scanner = new Scanner(System.in);
+    String isbn = scanner.nextLine().trim();
     System.out.println("======= Enter Membre Number :");
-    Scanner memberNum = new Scanner(System.in);
-    int num = memberNum.nextInt();
+    int num = scanner.nextInt();
     BookRepo myObj =new BookRepo();
     Books books =new Books(isbn);
     BookServices myObj2 =new BookServices();

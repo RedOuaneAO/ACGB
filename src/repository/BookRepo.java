@@ -297,5 +297,33 @@ public class BookRepo {
             System.out.println(e);
         }
     }
+ public int lastMembreNum(){
+        try {
+            PreparedStatement preparedStatement =con.prepareStatement("SELECT memberNum FROM membre ORDER BY memberNum DESC LIMIT 1");
+            ResultSet result = preparedStatement.executeQuery();
+            while (result.next()){
+                return  result.getInt("memberNum");
+            }
+        }catch (Exception e){
+            System.out.println(e);
+        }
+        return 0 ;
+ }
+ public void addMembre(Membre membre){
+        try{
+            PreparedStatement preparedStatement = con.prepareStatement("INSERT INTO `membre`(`firstName`, `secondName`, `memberNum`) VALUES (?,?,?)");
+            preparedStatement.setString(1,membre.getFirstName());
+            preparedStatement.setString(2,membre.getSecondName());
+            preparedStatement.setInt(3,membre.getMembreNumber());
+            int rowsAffected = preparedStatement.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Member added successfully!");
+            } else {
+                System.out.println("Member not added. No rows affected.");
+            }
+        }catch (Exception e){
+            System.out.println(e);
+        }
+ }
 }
 
