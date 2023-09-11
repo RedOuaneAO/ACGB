@@ -6,36 +6,54 @@ import java.sql.Statement;
 import repository.*;
 import java.sql.Connection;
 public class BookServices {
-    public int checkIfExcist(String auteur){
+    private BookRepo bookRepObj;
+    public BookServices() {
+        bookRepObj = new BookRepo();
+    }
+    public int checkIfExist(String auteur){
         int message = -1;
         if(auteur.equals("")){
             return  message;
         }else{
-        BookRepo bookRepObj= new BookRepo();
         int isExist = bookRepObj.checkAuthorExistence(auteur);
             message = isExist;
         }
         return message;
     }
-    public void addBookService(Books books ,int auteurId){
-        BookRepo addBook = new BookRepo();
-        int bookId =addBook.checkBookEx(books);
+    public void addBookService(Books books ,int authorId){
+        int bookId =bookRepObj.checkBookEx(books);
         if(bookId!=0){
-            addBook.updateBooks(books ,bookId);
+            bookRepObj.updateBooks(books ,bookId);
         }else {
-            addBook.addBooks(books ,auteurId);
+            bookRepObj.addBooks(books ,authorId);
         }
     }
+    public void updateBookService(Books books){
+        int bookId =bookRepObj.checkBookEx(books);
+        bookRepObj.updateBook(books ,bookId );
+    }
+    public void updateBookService1(){
+
+    }
     public int addAuteur(String auteur){
-        BookRepo addAuthor =new BookRepo();
-       return addAuthor.addAuteur(auteur);
+       return bookRepObj.addAuteur(auteur);
     }
     public void addBookService1(Books books){
-        BookRepo addBook = new BookRepo();
-        addBook.addBooks2(books);
+        bookRepObj.addBooks2(books);
     }
     public void search(String title){
-        BookRepo searchBook = new BookRepo();
-        searchBook.searchByTitle(title);
+        bookRepObj.searchByTitle(title);
+    }
+    //public boolean bookExist(String isbn){
+      // return bookRepObj.checkBookEx2(isbn);
+    //}
+    public int memberExit(int memberNum){
+        return bookRepObj.checkMembreEx(memberNum);
+    }
+    public void borrowBook(Reservation reservation){
+        bookRepObj.borrowBook(reservation);
+    }
+    public void returnBookService(Reservation reservation){
+        bookRepObj.returnBook(reservation);
     }
 }
